@@ -34,7 +34,11 @@ $.extend($.fn, {
 		// Add novalidate tag if HTML5.
 		this.attr('novalidate', 'novalidate');
 
+        // Store the key associated with the target form/div
+        this.data('data', this[0]);
+
 		validator = new $.validator( options, this[0] );
+
 		$.data(this[0], 'validator', validator);
 
 		if ( validator.settings.onsubmit ) {
@@ -317,7 +321,7 @@ $.extend($.validator, {
 			});
 
 			function delegate(event) {
-				var validator = $.data(this[0].form || this.closest('[novalidate="novalidate"]')[0], "validator"),
+				var validator = $.data(this.closest('[novalidate="novalidate"]').data('data') || this[0].form, "validator"),
 					eventType = "on" + event.type.replace(/^validate/, "");
 				if (validator.settings[eventType]) {
 					validator.settings[eventType].call(validator, this[0], event);
@@ -883,7 +887,7 @@ $.extend($.validator, {
 
 	staticRules: function(element) {
 		var rules = {};
-		var validator = $.data(element.form || $(element).closest('[novalidate="novalidate"]')[0], 'validator');
+		var validator = $.data($(element).closest('[novalidate="novalidate"]').data('data') || element.form, 'validator');
 		if (validator.settings.rules) {
 			rules = $.validator.normalizeRule(validator.settings.rules[element.name]) || {};
 		}
