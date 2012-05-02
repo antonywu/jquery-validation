@@ -94,7 +94,7 @@ $.extend($.fn, {
 	},
 	// http://docs.jquery.com/Plugins/Validation/valid
 	valid: function() {
-		if ( $(this[0]).is('form')) {
+		if ( $(this[0]).is('form') || $(this[0]).is('div')) {
 			return this.validate().form();
 		} else {
 			var valid = true;
@@ -317,7 +317,7 @@ $.extend($.validator, {
 			});
 
 			function delegate(event) {
-				var validator = $.data(this[0].form, "validator"),
+				var validator = $.data(this[0].form || this.closest('[novalidate="novalidate"]')[0], "validator"),
 					eventType = "on" + event.type.replace(/^validate/, "");
 				if (validator.settings[eventType]) {
 					validator.settings[eventType].call(validator, this[0], event);
@@ -883,7 +883,7 @@ $.extend($.validator, {
 
 	staticRules: function(element) {
 		var rules = {};
-		var validator = $.data(element.form, 'validator');
+		var validator = $.data(element.form || $(element).closest('[novalidate="novalidate"]')[0], 'validator');
 		if (validator.settings.rules) {
 			rules = $.validator.normalizeRule(validator.settings.rules[element.name]) || {};
 		}
