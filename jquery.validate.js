@@ -98,7 +98,7 @@ $.extend($.fn, {
 	},
 	// http://docs.jquery.com/Plugins/Validation/valid
 	valid: function() {
-		if ( $(this[0]).is('form') || $(this[0]).is('div')) {
+		if ( $(this[0]).is('form') || $(this[0]).is('div') || $(this[0]).is('table')) {
 			return this.validate().form();
 		} else {
 			var valid = true;
